@@ -1,5 +1,5 @@
 
-## brook*
+## brook \*
 
 Compute finite difference approximations to derivatives of multidimensional, multivariate functions.
 
