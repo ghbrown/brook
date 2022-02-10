@@ -1,6 +1,6 @@
 
 #package specific stuff
-PACKNAME=<PACKAGE_NAME>
+PACKNAME=brook
 TESTDIR=tests
 
 #useful general variables

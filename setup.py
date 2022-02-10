@@ -6,7 +6,7 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name=brook,  
+    name='brook',  
     version='0.0.0',
     scripts=['bin/brook'] ,
     author='Gabriel H. Brown',
