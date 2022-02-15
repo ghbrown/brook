@@ -27,7 +27,7 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     rule : {string}
         finite difference rule
         choose from : {'forward','backward','central'}
-    delta_vec : {float or array}
+    delta : {float or array}
         scalar/array of same shape as x that specifies the finite
             difference step size
     idx_order : {string}
