@@ -87,7 +87,6 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     multi_index_iterator = itertools.product(*index_range_array) #iterator of tensor 
 
     for i_m in multi_index_iterator:
-        print(f'i_m : {i_m}')
         derivative[i_m] = rules.forward(fun,x,order,i_m,
                                         x_shape,args,delta)
 

@@ -2,17 +2,24 @@
 import numpy as np
 import brook as bk
 
+
 def matvec_vec(x,A):
     # computes the matrix vector product
     #    A x
     return A @ x
+
 
 def matvec_mat(A,x):
     # computes the matrix vector product
     #    A x
     return A @ x
 
+
+
 if (__name__ == "__main__"):
+    print()
+    print(f'--------------------- MATVEC TEST ---------------------')
+    print(f'    f(A,x) = A x\n')
 
     # set matrix and vector
     A = np.array([[1.0,2.0,3.0],
@@ -26,8 +33,8 @@ if (__name__ == "__main__"):
 
     # derivative of matrix vector product with respect to vector
     deriv_matvec_vec = bk.diff(matvec_vec,x,1,args=(A,))
-    print(f'd(A @ x) / dx :\n{deriv_matvec_vec}\n')
+    print(f'df / dx :\n{deriv_matvec_vec}\n')
 
     # derivative of matrix vector product with respect to matrix
     deriv_matvec_mat = bk.diff(matvec_mat,A,1,args=(x,))
-    print(f'd(A @ x) / dA :\n{deriv_matvec_mat}')
+    print(f'df / dA :\n{deriv_matvec_mat}')
