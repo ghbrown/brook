@@ -3,6 +3,27 @@ import copy
 import itertools
 import numpy as np
 
+def implemented_rule_names():
+    # returns all implemented rules (all keys of rule dictionary)
+    #     as an iterable of strings
+    return rule_dict().keys()
+
+
+def rule_selector(rule_name):
+    # returns function pointer corresponding to rule_name
+    return rule_dict()[rule_name]
+
+
+def rule_dict():
+    # dictionary keys are rule names, items are respective function
+    #     pointers
+    # basically a hardcoded info variable
+    d = {
+        "forward" : forward,
+        }
+    return d
+
+
 def forward(fun,x,order,i_m,x_shape,args,delta):
     """
     Computes element of derivate object using forward difference

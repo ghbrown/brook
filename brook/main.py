@@ -42,6 +42,9 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     if (not isinstance(args,tuple)):
         print(f'ERROR: optional args input must be at tuple')
 
+    if (rule not in rules.implemented_rule_names()):
+        print(f'ERROR: selected finite difference rule {rule} is not implemented')
+
     
     # run test evaluation to assess output shape
     fun_output = fun(x,*args)
@@ -80,15 +83,21 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         
         
     # store derivative indices at front of array so one can use the
-    # a[i] convention will need to reverse this order before output?
+    # TODO: a[i] convention will need to reverse this order before
+    #       output?
 
     index_range_array = [np.arange(elem,dtype='i') for elem in
                          derivative_index_space]
     multi_index_iterator = itertools.product(*index_range_array) #iterator of tensor 
 
+    cur_rule = rules.rule_selector(rule)
     for i_m in multi_index_iterator:
-        derivative[i_m] = rules.forward(fun,x,order,i_m,
-                                        x_shape,args,delta)
+        # TODO: decide how to call different rules (if statements,
+        #       etc.)
+        # TODO: use symmetry of higher order derivatives to save work
+        #       by computing unique elements and symmetrizing
+        # TODO: implement masking
+        derivative[i_m] = cur_rule(fun,x,order,i_m,x_shape,args,delta)
 
     # TODO: figure out proper way to order indices
     #if (idx_order == 'natural'):
@@ -100,5 +109,4 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     return derivative
 
     # TODO: try Jacobian next to rule out edgecases introduced in first pass
-    #       try fun(x,A) = A @ x (derivative with respect to A)
 
