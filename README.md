@@ -1,14 +1,13 @@
 
 ## `brook`
 
-Compute finite difference approximations to derivatives of multidimensional, multivariate functions with respect to multidimensional variables.
+Compute finite difference approximations to derivatives of multidimensional, multivariate functions with respect to generic multidimensional variables.
 
-Unlike [`findiff`](https://github.com/maroba/findiff) and [`fastfd`](https://github.com/stefanmeili/FastFD), the focus of [`brook`](https://github.com/ghbrown/brook) is on computing higher order derivative objects (gradients, Jacobians, Hessians, etc.) for problems like optimization and the solution of nonlinear equations.
-Of course, it may also be used to numerically verify handcoded implementations of said objects.
+Unlike [`findiff`](https://github.com/maroba/findiff) and [`fastfd`](https://github.com/stefanmeili/FastFD) (which focus on the computation of finite differences over multidimensional grids likely representing physical systems), the focus of [`brook`](https://github.com/ghbrown/brook) is on computing higher order derivative objects (gradients, Jacobians, Hessians, etc.) for problems like optimization and the solution of nonlinear equations.
+Of course, it may also be used to numerically verify handcoded implementations of said derivative objects.
 
 ## Interface
-def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
-         idx_order='default'):
+
 ```python
 def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
          idx_order='default'):
@@ -48,7 +47,7 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
 
 ## Examples
 
-The first example computes the first derivative of the matrix vector product `f(A,x) = A x` with respect to both the matrix and vector.
+The first example computes the first derivative of the matrix vector product `f(A,x) = A x` with respect to both the matrix `A` and vector `x`.
 
 ```python
 import numpy as np
