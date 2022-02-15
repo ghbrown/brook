@@ -2,25 +2,31 @@
 import numpy as np
 import brook as bk
 
-def quad(x,n):
+def quad_vec(x,A,b):
     # computes the n dimensional quadratic of the form:
-    #    (1/2) x^T A x
+    #    (1/2) x^T A x - b^T x
+    return 0.5*(x.T@A@x) - b.T@x
 
-    # fix and set random seed
-    seed = 4 
-    np.random.seed(seed)
+if (__name__ == "__main__"):
 
-    # symmetrize matrix
-    A_unsymm = np.random.rand(n,n) 
-    A = A_unsymm + A_unsymm.T
+    # set matrix and vector
+    A = np.array([[1.0,2.0,3.0],
+                  [2.0,4.0,5.0],
+                  [3.0,5.0,6.0]])
+    x = np.array([1.0,2.0,3.0])
+    b = np.array([4.0,5.0,6.0])
 
-    return 0.5*(x.T@A@x)
+    # print relevant quantities
+    print(f'A :\n{A}\n')
+    print(f'x :\n{x}\n')
+    print(f'b :\n{b}\n')
+    print(f'A x - b :\n{A@x-b}\n')
 
+    # compute first derivative of quadratic with respect to x
+    deriv_quad_vec_1 = bk.diff(quad_vec,x,1,args=(A,b))
+    print(f'd(0.5 x^T A x ) / dx :\n{deriv_quad_vec_1}\n')
 
-# set dimension of problem
-n = 10
-
-# set point at which to compute derivatives
-x = np.random.rand(n)
-
-grad_quad_x = bk.diff(quad,x,2,args=(n,))
+    # TODO: this test broken!
+    # compute second derivative of quadratic with respect to x
+    deriv_quad_vec_2 = bk.diff(quad_vec,x,2,args=(A,b))
+    print(f'd^2(0.5 x^T A x ) / dx^2 :\n{deriv_quad_vec_1}\n')

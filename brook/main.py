@@ -2,15 +2,19 @@
 import itertools
 import numpy as np
 
+from brook import rules
 
-def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None):
+
+def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
+         idx_order='default'):
     """
     fun : {function}
         function whose derivative is sought
         has function definition
             def fun(x,*args):
     x : {scalar, array}
-        independent variable the derivative will be computed with respect to
+        independent variable the derivative will be computed with
+        respect to
     order : {integer}
         number of derivatives to take
     args : {tuple}
@@ -24,8 +28,15 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None):
         finite difference rule
         choose from : {'forward','backward','central'}
     delta_vec : {float or array}
-        scalar/array of same shape as x that specifies the finite difference
-            step size
+        scalar/array of same shape as x that specifies the finite
+            difference step size
+    idx_order : {string}
+        string indicating how indices of derivative object should be
+            ordered when returned
+        'default' : indices corresponding to derivatives are ordered
+                        first
+        'natural' : indices corresponding to elements of function
+                        output are ordered first (like in Jacobians)
     """
 
     if (not isinstance(args,tuple)):
@@ -37,7 +48,7 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None):
 
     if (isinstance(fun_output,float)):
         fun_output_shape = ()
-    elif (isinstance(fun_output_shape,np.ndarray)):
+    elif (isinstance(fun_output,np.ndarray)):
         fun_output_shape = fun_output.shape
     
     # get dimension of x
@@ -54,8 +65,6 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None):
 
     derivative = np.zeros(derivative_shape)
 
-    print(f'derivative shape : {derivative_shape}')
-
     # set finite differences step size(s)
     if (delta is None):
         step_size = 1e-6 # default step size
@@ -70,16 +79,26 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None):
         print(f'ERROR: delta must be one of {None,float,array}')
         
         
-    # store derivative indices at front of array so one can use the a[i] convention
-    # will need to reverse this order before output?
+    # store derivative indices at front of array so one can use the
+    # a[i] convention will need to reverse this order before output?
 
-    index_range_array = [np.arange(elem,dtype='i') for elem in derivative_index_space]
+    index_range_array = [np.arange(elem,dtype='i') for elem in
+                         derivative_index_space]
     multi_index_iterator = itertools.product(*index_range_array) #iterator of tensor 
 
     for i_m in multi_index_iterator:
-        derivative[i_m] = 4 #TODO: call rule function here
+        print(f'i_m : {i_m}')
+        derivative[i_m] = rules.forward(fun,x,order,i_m,
+                                        x_shape,args,delta)
 
-        print(f'{i_m}')
+    # TODO: figure out proper way to order indices
+    #if (idx_order == 'natural'):
+    if (False):
+        axes = tuple(list(range(len(derivative_shape))))
+        reversed_axes = tuple(reversed(axes))
+        #numpy.transpose(derivative)
+
+    return derivative
 
     # TODO: try Jacobian next to rule out edgecases introduced in first pass
     #       try fun(x,A) = A @ x (derivative with respect to A)
