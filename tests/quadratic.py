@@ -1,6 +1,6 @@
 
 import numpy as np
-import brook as bk
+import taylor as ta
 
 
 def quad_vec(x,A,b):
@@ -29,9 +29,9 @@ if (__name__ == "__main__"):
     print(f'A x - b :\n{A@x-b}\n')
 
     # compute first derivative of quadratic with respect to x
-    deriv_quad_vec_1 = bk.diff(quad_vec,x,1,args=(A,b))
+    deriv_quad_vec_1 = ta.diff(quad_vec,x,1,args=(A,b))
     print(f'df / dx :\n{deriv_quad_vec_1}\n')
 
     # compute second derivative of quadratic with respect to x
-    deriv_quad_vec_2 = bk.diff(quad_vec,x,2,args=(A,b))
+    deriv_quad_vec_2 = ta.diff(quad_vec,x,2,args=(A,b))
     print(f'd^2 f / dx^2 :\n{deriv_quad_vec_2}\n')

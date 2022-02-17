@@ -2,7 +2,7 @@
 import itertools
 import numpy as np
 
-from brook import rules
+from taylor import rules
 
 
 def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
@@ -45,7 +45,6 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
 
     if (rule not in rules.implemented_rule_names()):
         print(f'ERROR: selected finite difference rule {rule} is not implemented')
-
     
     # run test evaluation to assess output shape
     fun_output = fun(x,*args)

@@ -1,6 +1,6 @@
 
 import numpy as np
-import brook as bk
+import taylor as ta
 
 
 def f(x):
@@ -37,7 +37,7 @@ if (__name__ == "__main__"):
 
     # set current point x and compute exact Jacobian there
     x       = np.array([1.5,20,2.718])
-    J_exact = J_v_exact(x)
+    J_exact = J_f_exact(x)
 
     # print point and exact Jacobian there
     print(f'x :\n{x}\n')
@@ -48,5 +48,5 @@ if (__name__ == "__main__"):
     #       orderings
 
     # compute Jacobian of nonlinear f with respect to x numerically
-    deriv_nonlinear_vec = bk.diff(f,x,1)
+    deriv_nonlinear_vec = ta.diff(f,x,1)
     print(f'df / dx :\n{deriv_nonlinear_vec}\n')

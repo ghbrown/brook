@@ -1,6 +1,6 @@
 
 import numpy as np
-import brook as bk
+import taylor as ta
 
 
 def matvec_vec(x,A):
@@ -32,9 +32,9 @@ if (__name__ == "__main__"):
     print(f'x :\n{x}\n')
 
     # derivative of matrix vector product with respect to vector
-    deriv_matvec_vec = bk.diff(matvec_vec,x,1,args=(A,))
+    deriv_matvec_vec = ta.diff(matvec_vec,x,1,args=(A,))
     print(f'df / dx :\n{deriv_matvec_vec}\n')
 
     # derivative of matrix vector product with respect to matrix
-    deriv_matvec_mat = bk.diff(matvec_mat,A,1,args=(x,))
+    deriv_matvec_mat = ta.diff(matvec_mat,A,1,args=(x,))
     print(f'df / dA :\n{deriv_matvec_mat}')
