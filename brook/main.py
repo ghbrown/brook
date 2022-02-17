@@ -13,28 +13,29 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         has function definition
             def fun(x,*args):
     x : {scalar, array}
-        independent variable the derivative will be computed with
-        respect to
+        independent variable with respect to which the derivative
+            will be computed
     order : {integer}
-        number of derivatives to take
+        order of desired derivative
+        1: first derivative (gradient),
+        2: second derivative (Hessian), ...
     args : {tuple}
-        additional arguments to fun
+        tuple of additional arguments to fun
     mask : {integer or array}
-        array of same shape as the returned derivative
-        element 1 signifies this entry should be computed, element 0
-            signifies entry should not be computed
-        TODO: change over to using sparse masks or masked arrays, etc.
+        array of same shape as the returned derivative where
+            element = 1 -> this entry should be computed,
+            element = 0 -> entry should not be computed
     rule : {string}
         finite difference rule
-        choose from : {'forward','backward','central'}
+        choose from: {'forward','backward','central'}
     delta : {float or array}
         scalar/array of same shape as x that specifies the finite
             difference step size
     idx_order : {string}
         string indicating how indices of derivative object should be
             ordered when returned
-        'default' : indices corresponding to derivatives are ordered
-                        first
+        'default' : indices corresponding to derivatives are
+                        ordered first
         'natural' : indices corresponding to elements of function
                         output are ordered first (like in Jacobians)
     """
@@ -62,6 +63,10 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         x_shape = x.shape
             
     # partition modes of output into derivatives and output
+    # derivative index space stored at the front of full index space
+    #     so the a[i] convention can be used slice all remaining modes
+    #     of the array and seamless deal with functions that output
+    #     any shape array
     derivative_index_space = [dim for dim in list(x_shape)]*order
     output_index_space = list(fun_output_shape)
     derivative_shape =  derivative_index_space + output_index_space 
@@ -82,31 +87,25 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         print(f'ERROR: delta must be one of {None,float,array}')
         
         
-    # store derivative indices at front of array so one can use the
-    # TODO: a[i] convention will need to reverse this order before
-    #       output?
 
     index_range_array = [np.arange(elem,dtype='i') for elem in
                          derivative_index_space]
     multi_index_iterator = itertools.product(*index_range_array) #iterator of tensor 
 
+    # TODO: use symmetry of higher order derivatives to save work
+    #       by computing unique elements and symmetrizing
+    # TODO: implement masking via masked arrays or similar
     cur_rule = rules.rule_selector(rule)
     for i_m in multi_index_iterator:
-        # TODO: decide how to call different rules (if statements,
-        #       etc.)
-        # TODO: use symmetry of higher order derivatives to save work
-        #       by computing unique elements and symmetrizing
-        # TODO: implement masking
         derivative[i_m] = cur_rule(fun,x,order,i_m,x_shape,args,delta)
 
     # TODO: figure out proper way to order indices
+    #       *OFFER OPTIONS*
     #if (idx_order == 'natural'):
-    if (False):
+    if (False): # something like this
         axes = tuple(list(range(len(derivative_shape))))
         reversed_axes = tuple(reversed(axes))
-        #numpy.transpose(derivative)
+        #numpy.transpose(derivative,axes=reversed_axes)
 
     return derivative
-
-    # TODO: try Jacobian next to rule out edgecases introduced in first pass
 

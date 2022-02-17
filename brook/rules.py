@@ -56,11 +56,9 @@ def forward(fun,x,order,i_m,x_shape,args,delta):
 
         # make finite difference step on x as given by perm_vec
         x_cur = copy.deepcopy(x)
-        # TODO: should perm_tuple get reversed?
         for i_b, bit in enumerate(perm_tuple):
             if (bit):
-                # extract index of x to be stepped
-                # TODO: error in this indexing?
+                # extract index of x to be stepped then step it
                 i_start = int(i_m_stride*i_b)
                 i_end = i_start + i_m_stride
                 i_x = i_m[i_start:i_end] # index of an element in x

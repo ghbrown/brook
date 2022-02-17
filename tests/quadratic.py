@@ -32,7 +32,6 @@ if (__name__ == "__main__"):
     deriv_quad_vec_1 = bk.diff(quad_vec,x,1,args=(A,b))
     print(f'df / dx :\n{deriv_quad_vec_1}\n')
 
-    # TODO: this test broken!
     # compute second derivative of quadratic with respect to x
     deriv_quad_vec_2 = bk.diff(quad_vec,x,2,args=(A,b))
     print(f'd^2 f / dx^2 :\n{deriv_quad_vec_2}\n')

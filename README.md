@@ -17,28 +17,29 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         has function definition
             def fun(x,*args):
     x : {scalar, array}
-        independent variable the derivative will be computed with
-        respect to
+        independent variable with respect to which the derivative
+            will be computed
     order : {integer}
-        number of derivatives to take
+        order of desired derivative
+        1: first derivative (gradient),
+        2: second derivative (Hessian), ...
     args : {tuple}
-        additional arguments to fun
+        tuple of additional arguments to fun
     mask : {integer or array}
-        array of same shape as the returned derivative
-        element 1 signifies this entry should be computed, element 0
-            signifies entry should not be computed
-        TODO: change over to using sparse masks or masked arrays, etc.
+        array of same shape as the returned derivative where
+            element = 1 -> this entry should be computed,
+            element = 0 -> entry should not be computed
     rule : {string}
         finite difference rule
-        choose from : {'forward','backward','central'}
+        choose from: {'forward','backward','central'}
     delta : {float or array}
         scalar/array of same shape as x that specifies the finite
             difference step size
     idx_order : {string}
         string indicating how indices of derivative object should be
             ordered when returned
-        'default' : indices corresponding to derivatives are ordered
-                        first
+        'default' : indices corresponding to derivatives are
+                        ordered first
         'natural' : indices corresponding to elements of function
                         output are ordered first (like in Jacobians)
     """

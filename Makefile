@@ -45,6 +45,10 @@ sandbox:
 	deactivate; \
 	)
 
+#print TODO notes to terminal
+todo:
+	grep -r "TODO" $(PACKNAME) $(TESTDIR)
+
 #remove virtual environment
 clean:
 	@\rm -rf test_venv
