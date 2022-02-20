@@ -24,13 +24,13 @@ if (__name__ == "__main__"):
 
     # print relevant quantities
     print(f'A :\n{A}\n')
-    print(f'x :\n{x}\n')
-    print(f'b :\n{b}\n')
-    print(f'A x - b :\n{A@x-b}\n')
+    print(f'x : {x}\n')
+    print(f'b : {b}\n')
+    print(f'A x - b : {A@x-b}\n')
 
     # compute first derivative of quadratic with respect to x
     deriv_quad_vec_1 = ta.diff(quad_vec,x,1,args=(A,b))
-    print(f'df / dx :\n{deriv_quad_vec_1}\n')
+    print(f'df / dx : {deriv_quad_vec_1}\n')
 
     # compute second derivative of quadratic with respect to x
     deriv_quad_vec_2 = ta.diff(quad_vec,x,2,args=(A,b))

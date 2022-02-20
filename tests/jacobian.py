@@ -15,7 +15,7 @@ def f(x):
     return f
 
 def J_f_exact(x):
-    # computes the exact Jacobian of 
+    # computes the exact Jacobian of f(x)
     J = np.empty((4,3))
     # set Jacobian row by row
     J[0,:] = np.array([np.power(x[2],2), 0.0, 2*x[0]*x[2]])
@@ -33,14 +33,14 @@ if (__name__ == "__main__"):
     print(f'    f(x) = [ x_0*(x_2)^2,')
     print(f'             sin(x_1*x_2),')
     print(f'             exp(pi*x_0) + 10,')
-    print(f'             x_1 + x_2 + x_3 ]')
+    print(f'             x_1 + x_2 + x_3 ]\n')
 
     # set current point x and compute exact Jacobian there
     x       = np.array([1.5,20,2.718])
     J_exact = J_f_exact(x)
 
     # print point and exact Jacobian there
-    print(f'x :\n{x}\n')
+    print(f'x : {x}\n')
     print(f'J_f(x) (exact) :\n{J_exact}\n')
 
     # TODO: need transpose for Jacobian to be exactly right in the
@@ -49,4 +49,4 @@ if (__name__ == "__main__"):
 
     # compute Jacobian of nonlinear f with respect to x numerically
     deriv_nonlinear_vec = ta.diff(f,x,1)
-    print(f'df / dx :\n{deriv_nonlinear_vec}\n')
+    print(f'J_f(x) (approximate) :\n{deriv_nonlinear_vec}\n')

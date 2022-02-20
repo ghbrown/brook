@@ -29,7 +29,7 @@ if (__name__ == "__main__"):
 
     # print matrix and vector
     print(f'A :\n{A}\n')
-    print(f'x :\n{x}\n')
+    print(f'x : {x}\n')
 
     # derivative of matrix vector product with respect to vector
     deriv_matvec_vec = ta.diff(matvec_vec,x,1,args=(A,))

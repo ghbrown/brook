@@ -46,18 +46,19 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     if (rule not in rules.implemented_rule_names()):
         print(f'ERROR: selected finite difference rule {rule} is not implemented')
     
-    # run test evaluation to assess output shape
+    # run test evaluation to evaluate output shape
     fun_output = fun(x,*args)
-
     if (isinstance(fun_output,float)):
         fun_output_shape = ()
     elif (isinstance(fun_output,np.ndarray)):
         fun_output_shape = fun_output.shape
-    
+    else:
+        print(f'ERROR: function does not return a float or numpy array')
+
     # get dimension of x
     if (isinstance(x,(float,int))):
-        x = float(x)
-        x_shape = (1,)
+        x = np.array(x,dtype='float')
+        x_shape = x.shape
     elif (isinstance(x,np.ndarray)):
         x_shape = x.shape
             
@@ -85,11 +86,10 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     else:
         print(f'ERROR: delta must be one of {None,float,array}')
         
-        
-
+    # create iterator for multindex over derivative index space
     index_range_array = [np.arange(elem,dtype='i') for elem in
                          derivative_index_space]
-    multi_index_iterator = itertools.product(*index_range_array) #iterator of tensor 
+    multi_index_iterator = itertools.product(*index_range_array)
 
     # TODO: use symmetry of higher order derivatives to save work
     #       by computing unique elements and symmetrizing
