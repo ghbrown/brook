@@ -8,10 +8,13 @@ from taylor import rules
 def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
          idx_order='default'):
     """
+    Computes the numerical derivative of function using finite
+        differences
+
+    ---Inputs---
     fun : {function}
         function whose derivative is sought
-        has function definition
-            def fun(x,*args):
+        has function definition "def fun(x,*args): ... return val"
     x : {scalar, array}
         independent variable with respect to which the derivative
             will be computed
@@ -21,7 +24,7 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         2: second derivative (Hessian), ...
     args : {tuple}
         tuple of additional arguments to fun
-    mask : {integer or array}
+    mask : {integer, array}
         array of same shape as the returned derivative where
             element = 1 -> this entry should be computed,
             element = 0 -> entry should not be computed
@@ -38,6 +41,10 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
                         ordered first
         'natural' : indices corresponding to elements of function
                         output are ordered first (like in Jacobians)
+
+    ---Outputs---
+    derivative : {scalar or array}
+        numerical derivative of input function to order specified
     """
 
     if (not isinstance(args,tuple)):

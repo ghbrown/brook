@@ -4,20 +4,28 @@ import itertools
 import numpy as np
 
 def implemented_rule_names():
-    # returns all implemented rules (all keys of rule dictionary)
-    #     as an iterable of strings
+    """
+    returns all implemented rules (all keys of rule dictionary)
+        as an iterable of strings
+    """
     return rule_dict().keys()
 
 
 def rule_selector(rule_name):
-    # returns function pointer corresponding to rule_name
+    """
+    returns function pointer corresponding to input rule_name
+    """
     return rule_dict()[rule_name]
 
 
 def rule_dict():
-    # dictionary keys are rule names, items are respective function
-    #     pointers
-    # basically a hardcoded info variable
+    """
+    returns a dictionary representing the implemented finite
+        difference rules
+    dictionary keys are rule names, items are respective function
+        pointers
+    basically a hardcoded info variable
+    """
     d = {
         "forward" : forward,
         }
@@ -26,9 +34,10 @@ def rule_dict():
 
 def forward(fun,x,order,i_m,x_shape,args,delta):
     """
-    Computes element of derivate object using forward difference
-    scheme
+    Computes "element" (not necessarily a scalar) of derivate object
+        using forward difference scheme
 
+    ---Inputs---
     fun : {function}
         function whose derivative is sought
         has function definition
@@ -47,6 +56,10 @@ def forward(fun,x,order,i_m,x_shape,args,delta):
     delta : {numpy array}
         contains value of finite difference step size for every
         element of x
+    
+    ---Outputs---
+    elem : {scalar, array}
+        element of derivative object
     """
 
     i_m_stride = len(x_shape)
