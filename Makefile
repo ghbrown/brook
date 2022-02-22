@@ -28,12 +28,14 @@ update-venv:
 test:
 	@#operations in order:
 	@#activate virtual environment
-	@#run all scripts in $(TESTDIR) directory 
+	@#read/run scripts in order given by $(TESTDIR)/test_order.txt
 	@#deactivate virtual environment
 	@#all directed to shell (necessary)
 	@(\
 	source $(ACTIVATE); \
-	for f in $(TESTDIR)/*.py; do python "$$f"; done; \
+	while IFS='' read -r NAME; do \
+		python $(TESTDIR)/$${NAME}; \
+	done < $(TESTDIR)/test_order.txt; \
 	deactivate; \
 	)
 
@@ -47,7 +49,7 @@ sandbox:
 
 #print TODO notes to terminal
 todo:
-	grep -r "TODO" $(PACKNAME) $(TESTDIR)
+	@grep -r "TODO" $(PACKNAME) $(TESTDIR)
 
 #remove virtual environment
 clean:
@@ -59,4 +61,6 @@ clean:
 # 2. make sure dist is clear of old version(s) (move to old_dist)
 # 3. $ python3 setup.py bdist_wheel
 # 4. $ python -m twine upload dist/*
+
+#For a full guide see DZone's "Build your first pip package"
 
