@@ -4,7 +4,10 @@
 Compute finite difference approximations to derivatives of multidimensional, multivariate functions with respect to multidimensional variables.
 
 Unlike [`findiff`](https://github.com/maroba/findiff) and [`fastfd`](https://github.com/stefanmeili/FastFD) (which focus on the computation of finite differences over multidimensional grids likely representing physical systems), the focus of [`taylor`](https://github.com/ghbrown/taylor) is on computing higher order derivative objects (gradients, Jacobians, Hessians, etc.) for problems like optimization and the solution of nonlinear equations.
+TODO: note that it's similar to numdifftools
 Of course, it may also be used to numerically verify handcoded implementations of said derivative objects.
+
+TODO: contact this user (https://github.com/pbrod/numdifftools/issues/48) to advertise package
 
 ## Interface
 
