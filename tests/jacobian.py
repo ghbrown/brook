@@ -35,17 +35,13 @@ if (__name__ == "__main__"):
     print(f'             exp(pi*x_0) + 10,')
     print(f'             x_1 + x_2 + x_3 ]\n')
 
-    # set current point x and compute exact Jacobian there
+    # set current point x and compute exact Jacobian at point
     x       = np.array([1.5,20,2.718])
     J_exact = J_f_exact(x)
 
-    # print point and exact Jacobian there
+    # print x and exact Jacobian at x
     print(f'x : {x}\n')
     print(f'J_f(x) (exact) :\n{J_exact}\n')
-
-    # TODO: need transpose for Jacobian to be exactly right in the
-    #       "natural sense", figure out default versus natural
-    #       orderings
 
     # compute Jacobian of nonlinear f with respect to x numerically
     deriv_nonlinear_vec = ta.diff(f,x,1)

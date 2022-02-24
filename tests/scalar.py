@@ -10,16 +10,17 @@ def f(x):
 
 def df_dx_exact(x):
     # computes the exact first derivative of f(x)
-    df_dx = 20 - 28*x - 2*(1.8*np.cos(1.8*x)*np.exp(-5*x) +
-                           -5*np.sin(1.8*x)*np.exp(-5*x))
+    df_dx = 20 - 28*x - 2*(1.8*np.cos(1.8*x) -
+                           5*np.sin(1.8*x))*np.exp(-5*x)
     return df_dx
 
 def d2f_dx2_exact(x):
     # computes the exacts second derivative of f(x)
-    d2f_dx2 = -28 - 2*(1.8*(-1.8*np.sin(1.8*x)*np.exp(-5*x) +
-                            -5*np.cos(1.8*x)*np.exp(-5*x)) -
-                    5*(-1.8*np.sin(1.8*x)*np.exp(-5*x) -
-                       5*np.sin(1.8*x)*np.exp(-5*x)))
+    d2f_dx2 = -28 - 2*((-1.8*1.8*np.sin(1.8*x) -
+                        5*1.8*np.cos(1.8*x))     +
+                      -5*(1.8*np.cos(1.8*x) -
+                          5*np.sin(1.8*x)))*np.exp(-5*x)
+                       
     return d2f_dx2
 
 

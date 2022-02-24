@@ -6,7 +6,7 @@ from taylor import rules
 
 
 def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
-         idx_order='default'):
+         idx_order='natural'):
     """
     Computes the numerical derivative of function using finite
         differences
@@ -37,21 +37,37 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     idx_order : {string}
         string indicating how indices of derivative object should be
             ordered when returned
-        'default' : indices corresponding to derivatives are
-                        ordered first
-        'natural' : indices corresponding to elements of function
-                        output are ordered first (like in Jacobians)
+        'natural'  : indices corresponding to elements of function
+                         output are ordered first (like in Jacobians)
+        'reversed' : indices corresponding to derivatives are
+                          ordered first
 
     ---Outputs---
     derivative : {scalar or array}
         numerical derivative of input function to order specified
     """
 
+    # get dimension of x
+    if (isinstance(x,(float,int))):
+        # transform to 1-D, 1 element array to handle like array case
+        x = np.array(x,dtype='float')
+        x_shape = x.shape
+    elif (isinstance(x,np.ndarray)):
+        x_shape = x.shape
+    else:
+        print(f'ERROR: variable x must be a numeric scalar or array')
+        
+
     if (not isinstance(args,tuple)):
         print(f'ERROR: optional args input must be at tuple')
 
     if (rule not in rules.implemented_rule_names()):
         print(f'ERROR: selected finite difference rule {rule} is not implemented')
+
+    if (not isinstance(idx_order,str)):
+        print(f'ERROR: idx_order must be one of: \'natural\', \'reversed\'')
+    elif (idx_order not in ['default','natural']):
+        print(f'ERROR: idx_order must be one of: \'natural\', \'reversed\'')
     
     # run test evaluation to evaluate output shape
     fun_output = fun(x,*args)
@@ -61,13 +77,6 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         fun_output_shape = fun_output.shape
     else:
         print(f'ERROR: function does not return a float or numpy array')
-
-    # get dimension of x
-    if (isinstance(x,(float,int))):
-        x = np.array(x,dtype='float')
-        x_shape = x.shape
-    elif (isinstance(x,np.ndarray)):
-        x_shape = x.shape
             
     # partition modes of output into derivatives and output
     # derivative index space stored at the front of full index space
@@ -105,13 +114,17 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     for i_m in multi_index_iterator:
         derivative[i_m] = cur_rule(fun,x,order,i_m,x_shape,args,delta)
 
-    # TODO: figure out proper way to order indices
-    #       *OFFER OPTIONS*
-    #if (idx_order == 'natural'):
-    if (False): # something like this
-        axes = tuple(list(range(len(derivative_shape))))
-        reversed_axes = tuple(reversed(axes))
-        #numpy.transpose(derivative,axes=reversed_axes)
+    # at this point modes of derivative array are already in reversed
+    #     order, so they need only be changed if user wants natural
+    #     ordering
+    if (idx_order == 'natural'):
+        cur_mode_order = tuple(range(len(derivative_shape))) #ordered
+        # integers representing current modes
+        derivative_index_modes = cur_mode_order[:len(derivative_index_space)]
+        output_index_modes = cur_mode_order[len(derivative_index_space):]
+        new_mode_order = tuple(list(output_index_modes) +
+                               list(derivative_index_modes))
+        derivative = np.transpose(derivative,axes=new_mode_order)
 
     return derivative
 
