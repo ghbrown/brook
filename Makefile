@@ -49,7 +49,7 @@ sandbox:
 
 #print TODO notes to terminal
 todo:
-	@grep -r "TODO" $(PACKNAME) $(TESTDIR)
+	@grep -r "TODO" $(PACKNAME) $(TESTDIR) README.md
 
 #remove virtual environment
 clean:

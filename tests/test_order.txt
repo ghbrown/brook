@@ -1,3 +1,4 @@
+error.py
 scalar.py
 jacobian.py
 quadratic.py

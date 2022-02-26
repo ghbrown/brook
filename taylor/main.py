@@ -114,9 +114,9 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
     for i_m in multi_index_iterator:
         derivative[i_m] = cur_rule(fun,x,order,i_m,x_shape,args,delta)
 
-    # at this point modes of derivative array are already in reversed
-    #     order, so they need only be changed if user wants natural
-    #     ordering
+    # at this point modes of derivative array are already in
+    #     "reversed" order, so they need only be changed if user wants
+    #     "natural" ordering
     if (idx_order == 'natural'):
         cur_mode_order = tuple(range(len(derivative_shape))) #ordered
         # integers representing current modes
