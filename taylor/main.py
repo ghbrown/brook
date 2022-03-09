@@ -1,5 +1,5 @@
 
-import itertools
+import itertools as it
 import numpy as np
 
 from taylor import rules
@@ -77,17 +77,6 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
         fun_output_shape = fun_output.shape
     else:
         print(f'ERROR: function does not return a float or numpy array')
-            
-    # partition modes of output into derivatives and output
-    # derivative index space stored at the front of full index space
-    #     so the a[i] convention can be used slice all remaining modes
-    #     of the array and seamless deal with functions that output
-    #     any shape array
-    derivative_index_space = [dim for dim in list(x_shape)]*order
-    output_index_space = list(fun_output_shape)
-    derivative_shape =  derivative_index_space + output_index_space 
-
-    derivative = np.zeros(derivative_shape)
 
     # set finite differences step size(s)
     if (delta is None):
@@ -101,15 +90,34 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
             print(f'ERROR: setting delta as array requires it be the same shape as x')
     else:
         print(f'ERROR: delta must be one of {None,float,array}')
+
+    # partition modes of output into derivatives and output
+    # take a derivative of the form (d^n f_ij..k)/(d x_pq..r)^n:
+    #   the output index space is len(f.shape) modes
+    #   the derivative index space is order*len(x.shape) modes
+    #   the full derivative tensor has len(f.shape) +
+    #     order*len(x.shape) modes
+    # the derivative modes are stroed first such that D[i,j,..k]
+    #   has len(f.shape) modes, which seamless deals with function
+    #   outputting arrays of any shape
+    derivative_index_space = [dim for dim in list(x_shape)]*order
+    output_index_space = fun_output_shape
+    derivative_shape =  tuple(derivative_index_space) + output_index_space 
+
+    derivative = np.zeros(derivative_shape)
         
     # create iterator for multindex over derivative index space
-    index_range_array = [np.arange(elem,dtype='i') for elem in
-                         derivative_index_space]
-    multi_index_iterator = itertools.product(*index_range_array)
+    derivative_index_range_array = [np.arange(elem,dtype='i') for elem in
+                                    derivative_index_space]
+    multi_index_iterator = it.product(*derivative_index_range_array)
 
     # TODO: use symmetry of higher order derivatives to save work
     #       by computing unique elements and symmetrizing
     # TODO: implement masking via masked arrays or similar
+
+    # iterate over derivative index space and compute the derivative
+    #   one "element" at a time, noting that an "element" has the
+    #   same shape as the output of f
     cur_rule = rules.rule_selector(rule)
     for i_m in multi_index_iterator:
         derivative[i_m] = cur_rule(fun,x,order,i_m,x_shape,args,delta)
@@ -128,3 +136,5 @@ def diff(fun,x,order,args=(),mask=None,rule='forward',delta=None,
 
     return derivative
 
+
+# TODO: think about using Richardson extrapolation
